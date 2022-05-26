@@ -1,22 +1,60 @@
-# Symfony Docker template
+### XPATH partie théorique
 
-### General information about this template
+1. Retourner tous les éléments book
 
-Software / Images versions:
- - PHP: `php:8.1-fpm-bullseye`
- - Nginx: `nginx:1.9.15-alpine`
- - PostgreSQL: `postgres:14.2-alpine`
+```xpath
+/library/book
+```
 
-### Configuration files
+2. Retourner tous les éléments title ayant comme parent un élément book avec un attribut type égal à roman
 
-The `nginx` configuration is located in `docker/nginx`. <br />
-The `php` configuration is located in `docker/php` and `docker/php-fpm`. <br />
-The `xdebug` configuration is located `docker/php`. <br />
+```xpath
+//book[@type='roman']/title
+```
 
-### Before starting
+3. Retourner le nombre d'éléments book ayant un attribut type égal à bd
 
-Before using this template, please rename the docker user in the `Dockerfile`, and the docker workdir in the `Dockerfile` and `docker-compose.yml` file.<br />
-The User entity (`App\Entity\User`) has `app_user` as table name, change it to your needs. Avoid `user` as the table name since it's reserved by Postgres and will throw exceptions when trying to interact with the database.<br />
+```xpath
+count(//*[@type='bd'])
+```
+
+4. Que renvoie la requête XPath suivante :  /library/library/ancestor-or-self::library
+
+La requête renvoie toute les library ayant un parent library donc le livre toto 5. En raison de l'axes ancestor-or-self, nous cherchons également les parents et grands parent donc l'entiereté de notre document   
+
+```xml
 
 
-&copy; Edouard Courty - 2022
+<library>
+    <book>
+        <title>toto1</title>
+        <author>titi</author>
+    </book>
+    <book type="doc">
+        <title>toto2</title>
+        <author>titi</author>
+    </book>
+    <book type="roman">
+        <title>toto3</title>
+        <author>titi</author>
+    </book>
+    <book type="bd">
+        <title>toto4</title>
+        <author>titi2</author>
+    </book>
+    <library>
+        <book type="roman">
+            <title>toto5</title>
+            <author>titi</author>
+        </book>
+    </library>
+</library>
+```
+```xml
+<library>
+<book type="roman">
+    <title>toto5</title>
+    <author>titi</author>
+</book>
+</library>
+```

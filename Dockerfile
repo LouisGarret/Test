@@ -2,7 +2,7 @@ FROM php:8.1-fpm-bullseye
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-WORKDIR /var/www/test-web-atrio
+WORKDIR /var/www/test
 
 COPY docker/php/xdebug.ini /usr/local/etc/php/conf.d/
 COPY docker/php-fpm/php-fpm.conf /usr/local/etc/php-fpm.conf
@@ -36,14 +36,14 @@ RUN docker-php-ext-enable xdebug
 
 RUN (umask 000; touch /var/log/xdebug.log)
 
-RUN useradd -ms /bin/bash test-web-atrio
-RUN usermod -u 1000 test-web-atrio
+RUN useradd -ms /bin/bash test
+RUN usermod -u 1000 test
 
 RUN touch /var/log/php-fpm.error.log
 RUN touch /var/log/php-fpm.access.log
 
-RUN chown -R test-web-atrio:test-web-atrio /var/log/php-fpm.error.log /var/log/php-fpm.access.log
+RUN chown -R test:test /var/log/php-fpm.error.log /var/log/php-fpm.access.log
 
-USER test-web-atrio
+USER test
 
 CMD ["php-fpm"]
